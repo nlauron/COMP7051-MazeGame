@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Maze : MonoBehaviour {
+public class Maze : MonoBehaviour {    
 
     public GameObject wall;
     public float wallLength = 1.0f;
@@ -24,6 +24,7 @@ public class Maze : MonoBehaviour {
         Vector3 myPos = initPos;
         GameObject tempWall;
 
+        //X-Axis
         for (int i = 0; i < ySize; i++)
         {
             for (int j = 0; j <= xSize; j++)
@@ -34,6 +35,7 @@ public class Maze : MonoBehaviour {
             }
         }
 
+        //Y-Axis
         for (int i = 0; i <= ySize; i++)
         {
             for (int j = 0; j < xSize; j++)
@@ -44,6 +46,8 @@ public class Maze : MonoBehaviour {
             }
         }
     }
+
+
 	
 	// Update is called once per frame
 	void Update () {
