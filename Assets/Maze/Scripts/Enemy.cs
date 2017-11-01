@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
     
     private bool isAnimating = false;
+    private GameObject wall;
 
     // Use this for initialization
     void Start () {
@@ -21,7 +22,7 @@ public class Enemy : MonoBehaviour {
         {
             anim.enabled = true;
             anim.Play("DudeWalk");
-            transform.Translate(Vector3.forward * Time.deltaTime);
+            transform.Translate(Vector3.forward * Time.deltaTime * 2);
         }
         else
         {
@@ -33,9 +34,17 @@ public class Enemy : MonoBehaviour {
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Wall")
-            transform.Rotate(new Vector3 (0,90,0));
+        {
+            int turn = Random.Range(1, 4);
+            if (turn == 1)
+                transform.Rotate(new Vector3(0, 90, 0));
+            else if (turn == 2)
+                transform.Rotate(new Vector3(0, -90, 0));
+            else if (turn == 3)
+                transform.Rotate(new Vector3(0, 180, 0));
+        }
 
-        if (collision.gameObject.tag == "Player")
+            if (collision.gameObject.tag == "Player")
             Destroy(collision.gameObject);
     }
 
