@@ -4,29 +4,37 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
     public Maze mazePrefab;
+    public GameObject playerPrefab;
+
+    private GameObject playerInstance;
 
     private Maze mazeInstance;
 
     // Use this for initialization
     void Start() {
-        newGame();
+        StartCoroutine(newGame());
     }
 
     // Update is called once per frame
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if(Input.GetKeyDown(KeyCode.Escape)) {
             restart();
         }
     }
 
-    private void newGame() {
+    private IEnumerator newGame() {
         mazeInstance = Instantiate(mazePrefab) as Maze;
-        StartCoroutine(mazeInstance.generate());
+        yield return StartCoroutine(mazeInstance.generate());
+        playerInstance = Instantiate(playerPrefab);
+        playerInstance.transform.localPosition = mazeInstance.getCell(mazeInstance.randomCoordinates).transform.localPosition;
     }
 
     private void restart() {
         StopAllCoroutines();
         Destroy(mazeInstance.gameObject);
-        newGame();
+        if (playerInstance != null) {
+            Destroy(playerInstance.gameObject);
+        }
+        StartCoroutine(newGame());
     }
 }
