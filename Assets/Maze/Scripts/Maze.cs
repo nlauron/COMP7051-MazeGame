@@ -15,6 +15,12 @@ public class Maze : MonoBehaviour {
         return cells[coords.x, coords.z];
     }
 
+    public MazeCell getCellFromCoords(Vector3 coord) {
+        int closestX = Mathf.RoundToInt(coord.x + size.x * 0.5f - 0.5f);
+        int closestZ = Mathf.RoundToInt(coord.z + size.z * 0.5f - 0.5f);
+        return cells[closestX, closestZ];
+    }
+
     public IEnumerator generate() {
         WaitForSeconds delay = new WaitForSeconds(generationStepDelay);
         cells = new MazeCell[size.x, size.z];
