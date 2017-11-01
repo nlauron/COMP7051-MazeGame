@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     public Maze mazePrefab;
     public GameObject playerPrefab;
+    public Camera mainCamera;
 
     private GameObject playerInstance;
 
@@ -23,10 +24,13 @@ public class GameManager : MonoBehaviour {
     }
 
     private IEnumerator newGame() {
+        mainCamera.enabled = true;
         mazeInstance = Instantiate(mazePrefab) as Maze;
         yield return StartCoroutine(mazeInstance.generate());
         playerInstance = Instantiate(playerPrefab);
+        playerInstance.transform.parent = transform;
         playerInstance.transform.localPosition = mazeInstance.getCell(mazeInstance.randomCoordinates).transform.localPosition;
+        mainCamera.enabled = false;
     }
 
     private void restart() {
