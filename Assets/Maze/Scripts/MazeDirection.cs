@@ -33,6 +33,14 @@ public static class MazeDirections {
         Quaternion.Euler(0f, 270f, 0f)
     };
 
+    private static Vector3[] v3Rotations =
+    {
+        Vector3.zero,
+        new Vector3(0f, 90f, 0f),
+        new Vector3(0f, 180f, 0f),
+        new Vector3(0f, 270f, 0f)
+    };
+
     public static IntVector2 toIntVector2 (this MazeDirection direction) {
         return vectors[(int)direction];
     }
@@ -43,5 +51,10 @@ public static class MazeDirections {
 
     public static Quaternion toRotation (this MazeDirection direction) {
         return rotations[(int)direction];
+    }
+
+    public static Vector3 toVector3Rotation (this MazeDirection direction)
+    {
+        return v3Rotations[(int)direction];
     }
 }

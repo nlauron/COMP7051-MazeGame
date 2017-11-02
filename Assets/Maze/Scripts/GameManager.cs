@@ -5,9 +5,14 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     public Maze mazePrefab;
     public GameObject playerPrefab;
+    public GameObject enemyPrefab;
+    public GameObject goalPrefab;
+
     public Camera mainCamera;
 
     private GameObject playerInstance;
+    private GameObject enemyInstance;
+    private GameObject goal;
 
     private Maze mazeInstance;
 
@@ -18,7 +23,7 @@ public class GameManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if(Input.GetKeyDown(KeyCode.Escape)) {
+        if(Input.GetButton("Reset"))  {
             restart();
         }
     }
@@ -30,6 +35,13 @@ public class GameManager : MonoBehaviour {
         playerInstance = Instantiate(playerPrefab);
         playerInstance.transform.parent = transform;
         playerInstance.transform.localPosition = mazeInstance.getCell(mazeInstance.randomCoordinates).transform.localPosition;
+        enemyInstance = Instantiate(enemyPrefab);
+        enemyInstance.transform.parent = transform;
+        enemyInstance.transform.localPosition = mazeInstance.getCell(mazeInstance.randomCoordinates).transform.localPosition;
+        goal = Instantiate(goalPrefab);
+        goal.transform.parent = transform;
+        goal.transform.localPosition = mazeInstance.getCell(mazeInstance.randomCoordinates).transform.localPosition;
+
         mainCamera.enabled = false;
     }
 
@@ -38,6 +50,8 @@ public class GameManager : MonoBehaviour {
         Destroy(mazeInstance.gameObject);
         if (playerInstance != null) {
             Destroy(playerInstance.gameObject);
+            Destroy(enemyInstance.gameObject);
+            Destroy(goal.gameObject);
         }
         StartCoroutine(newGame());
     }
