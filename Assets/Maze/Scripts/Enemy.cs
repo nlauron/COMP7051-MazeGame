@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour {
-    
-    private bool isAnimating = false;
-    private GameObject wall;
-
+    public int forwardWeight = 2;
+    public static int loseCondition = 0;
     // Use this for initialization
     void Start () {
 		
@@ -15,37 +14,53 @@ public class Enemy : MonoBehaviour {
 // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("space"))
-            isAnimating = !isAnimating;
         Animator anim = GetComponent<Animator>();
-        if (isAnimating)
-        {
-            anim.enabled = true;
-            anim.Play("DudeWalk");
-            transform.Translate(Vector3.forward * Time.deltaTime * 2);
-        }
-        else
-        {
-            anim.enabled = false;
-            anim.StopPlayback();
-        }        
+        anim.enabled = true;
+        anim.Play("DudeWalk");
+        transform.Translate(Vector3.forward * Time.deltaTime);
+ 
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Wall")
         {
-            int turn = Random.Range(1, 4);
-            if (turn == 1)
-                transform.Rotate(new Vector3(0, 90, 0));
-            else if (turn == 2)
-                transform.Rotate(new Vector3(0, -90, 0));
-            else if (turn == 3)
-                transform.Rotate(new Vector3(0, 180, 0));
+            MazePassage[] passages = findPassages(collision.transform);
+            MazePassage randomPassage = passages[Random.Range(0, passages.Length)];
+
+            transform.Rotate(randomPassage.direction.toVector3Rotation() - transform.localRotation.eulerAngles);
         }
 
-            if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
+        {
             Destroy(collision.gameObject);
+            loseCondition++;
+            SceneManager.LoadScene(0);
+        }
+    }
+
+    private MazePassage[] findPassages(Transform wall)
+    {
+        List<MazePassage> passages = new List<MazePassage>();
+        foreach(Transform tr in wall.parent.transform)
+        {
+            MazePassage passage = tr.GetComponent<MazePassage>();
+            if(passage != null)
+            {
+                if(passage.direction.toVector3Rotation() == transform.localRotation.eulerAngles)
+                {
+                    for(int i = 0; i < forwardWeight; i++)
+                    {
+                        passages.Add(passage);
+                    }
+                } else
+                {
+                    passages.Add(passage);
+
+                }
+            }
+        }
+        return passages.ToArray();
     }
 
 }
