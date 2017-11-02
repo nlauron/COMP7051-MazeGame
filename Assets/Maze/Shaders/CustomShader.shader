@@ -102,7 +102,7 @@
                 technique Ambient {
                 pass Pass1
                 {
-                    VertexShader = compile v
+                    
                 }
             }
 			ENDCG

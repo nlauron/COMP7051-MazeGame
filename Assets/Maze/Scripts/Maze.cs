@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Maze : MonoBehaviour {
-    public IntVector2 size;
+    public static IntVector2 size;
     public MazeCell cellPrefab;
     public float generationStepDelay;
     public MazePassage passagePrefab;

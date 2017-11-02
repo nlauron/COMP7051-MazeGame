@@ -38,6 +38,7 @@ public class Player : MonoBehaviour {
         {
             winCondition++;
             SceneManager.LoadScene(0);
+            Debug.Log("Hit Hit Hit");
         }
     }
 }
