@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
-    private bool toggle;
+    private bool toggle = true;
+    public static int winCondition = 0;
 
     // Use this for initialization
     void Start() {
@@ -13,9 +15,6 @@ public class Player : MonoBehaviour {
 
     // Update is called once per frame
     void Update() { 
-        if (Input.GetButton("Reset"))
-            Application.LoadLevel(Application.loadedLevel);
-
         if (Input.GetButton("Phase"))
             toggle = !toggle;
 
@@ -24,5 +23,21 @@ public class Player : MonoBehaviour {
         else
             gameObject.layer = 10;
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            Destroy(collision.gameObject);
+            Enemy.loseCondition++;
+            SceneManager.LoadScene(0);
+        }
+
+        if (collision.gameObject.tag == "Goal")
+        {
+            winCondition++;
+            SceneManager.LoadScene(0);
+        }
     }
 }
