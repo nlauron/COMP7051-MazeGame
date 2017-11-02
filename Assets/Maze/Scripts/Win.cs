@@ -19,12 +19,13 @@ public class Win : MonoBehaviour
         trophy.GetComponent<Transform>().Rotate(Vector3.up * Time.deltaTime * 250);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.tag == "Player")
         {
             Player.winCondition++;
             SceneManager.LoadScene(0);
+            Debug.Log("Hit Hit");
         }
     }
 }
