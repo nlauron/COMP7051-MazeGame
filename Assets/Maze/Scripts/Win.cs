@@ -24,7 +24,7 @@ public class Win : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             Player.winCondition++;
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(2);
             Debug.Log("Hit Hit");
         }
     }

@@ -11,6 +11,6 @@ public class MenuReturn : MonoBehaviour {
         Enemy.loseCondition = 0;
         Player.winCondition = 0;
         Cursor.visible = false;
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(0);
     }
 }
