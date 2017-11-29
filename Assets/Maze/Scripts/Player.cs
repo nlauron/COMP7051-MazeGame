@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
     private bool toggle = true;
     public GameObject ballPrefab;
+    public Camera pov;
+    public Text scoreHUD;
     public static int winCondition = 0;
+    public static int score;
 
     // Use this for initialization
     void Start() {
-
+        score = 0;
     }
 
     // Update is called once per frame
@@ -28,11 +32,12 @@ public class Player : MonoBehaviour {
         {
             GameObject ball = Instantiate(ballPrefab, GameObject.Find("HandPosition").transform);
             ball.transform.localPosition = Vector3.zero;
+            ball.GetComponent<Rigidbody>().AddForce((pov.transform.forward) * 250);
             ball.transform.parent = GameObject.Find("GameController").transform;
-            ball.GetComponent<Rigidbody>().AddForce((transform.forward) * 250);
             Destroy(ball, 5.0f);
         }
 
+        scoreHUD.text = "Score: " + score;
     }
 
     private void OnCollisionEnter(Collision collision)

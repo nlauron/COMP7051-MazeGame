@@ -13,4 +13,12 @@ public class Ball : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Floor")
+        {
+            Destroy(this);
+        }
+    }
 }

@@ -37,6 +37,12 @@ public class Enemy : MonoBehaviour {
             loseCondition++;
             SceneManager.LoadScene(0);
         }
+
+        if (collision.gameObject.tag == "Ball")
+        {
+            Destroy(collision.gameObject);
+            Player.score = Player.score + 100;
+        }
     }
 
     private MazePassage[] findPassages(Transform wall)
@@ -62,5 +68,6 @@ public class Enemy : MonoBehaviour {
         }
         return passages.ToArray();
     }
+
 
 }
