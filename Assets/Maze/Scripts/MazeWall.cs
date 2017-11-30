@@ -10,6 +10,4 @@ public class MazeWall : MazeCellEdge {
         Renderer render = GetComponentInChildren<Renderer>();
         render.material = wallMaterial[(int)direction];
     }
-
-
 }
