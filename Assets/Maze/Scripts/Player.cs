@@ -8,6 +8,7 @@ public class Player : MonoBehaviour {
 
     private bool toggle = true;
     public static int winCondition = 0;
+    public static int loseCondition = 0;
     public GameObject pov;
     public Shader mainShader;
     public GameObject sun;
@@ -68,6 +69,7 @@ public class Player : MonoBehaviour {
             playDay();
         else
             playNight();
+        
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -75,8 +77,8 @@ public class Player : MonoBehaviour {
         if (collision.gameObject.tag == "Enemy")
         {
             Destroy(collision.gameObject);
-            Enemy.loseCondition++;
-            SceneManager.LoadScene(0);
+            Player.loseCondition++;
+            SceneManager.LoadScene(2);
         }
 
         if (collision.gameObject.tag == "Goal")

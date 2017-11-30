@@ -7,7 +7,7 @@ public class PlayAgain : MonoBehaviour {
 
     public void playAgain()
     {
-        Enemy.loseCondition = 0;
+        Player.loseCondition = 0;
         Player.winCondition = 0;
         Cursor.visible = false;
         SceneManager.LoadScene(1);

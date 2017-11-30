@@ -14,13 +14,11 @@ public class Results : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Enemy.loseCondition >= 1)
+        if (Player.loseCondition >= 1)
         {
             title.color = Color.red;
             title.text = "You Lose";
-        }
-
-        if (Player.winCondition >=1)
+        }else if (Player.winCondition >=1)
         {
             title.color = Color.green;
             title.text = "You Win";
