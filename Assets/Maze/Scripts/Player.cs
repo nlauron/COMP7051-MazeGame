@@ -14,10 +14,10 @@ public class Player : MonoBehaviour {
     public static int winCondition = 0;
     public static int score;
     public Shader mainShader;
-
-    private bool day = true;
-    private bool fog = true;
+    public static bool day = true;
+    public static bool fog = true;
     private bool flashLight = true;
+    private float distance;
 
     // Use this for initialization
     void Start() {
@@ -43,19 +43,25 @@ public class Player : MonoBehaviour {
             toggleFlashLight();
         }       
         
-    if (Input.GetMouseButtonDown(0))
-        {
-            GameObject ball = Instantiate(ballPrefab, GameObject.Find("HandPosition").transform);
-            ball.transform.localPosition = Vector3.zero;
-            ball.GetComponent<Rigidbody>().AddForce((pov.transform.forward) * 250);
-            ball.transform.parent = GameObject.Find("GameController").transform;
-            Destroy(ball, 5.0f);
-        }
-
+        if (Input.GetMouseButtonDown(0))
+            {
+                GameObject ball = Instantiate(ballPrefab, GameObject.Find("HandPosition").transform);
+                ball.transform.localPosition = Vector3.zero;
+                ball.GetComponent<Rigidbody>().AddForce((pov.transform.forward) * 250);
+                ball.transform.parent = GameObject.Find("GameController").transform;
+                Destroy(ball, 5.0f);
+            }
         scoreHUD.text = "Score: " + score;
+
+        distance = Vector3.Distance(this.transform.position, GameObject.Find("Enemy").transform.position);
+        
+        if (!fog && distance > 10.0f)
+        {
+            GetComponentInChildren<AudioSource>().volume = 0.5f;
+        }
 }
 
-private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Enemy")
         {
@@ -77,7 +83,7 @@ private void OnCollisionEnter(Collision collision)
     }
 
     public void setTime(bool day) {
-        this.day = day;
+        Player.day = day;
         Shader.SetGlobalInt("_Day", day ? 1 : 0);
     }
 
