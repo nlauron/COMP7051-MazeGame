@@ -13,25 +13,37 @@ public class Player : MonoBehaviour {
     public AudioClip wall;
     public static int winCondition = 0;
     public static int score;
+    public Shader mainShader;
+
+    private bool day = true;
+    private bool fog = true;
+    private bool flashLight = true;
 
     // Use this for initialization
     void Start() {
+        pov.SetReplacementShader(mainShader, null);
         score = 0;
         GetComponent<AudioSource>().playOnAwake = false;
         GetComponent<AudioSource>().clip = wall;
     }
 
     // Update is called once per frame
-    void Update() { 
-        if (Input.GetButtonDown("Phase"))
+    void Update() {
+        if (Input.GetButtonDown("Phase")) {
             toggle = !toggle;
-
-        if (toggle)
-            gameObject.layer = 9;
-        else
-            gameObject.layer = 10;
-
-        if (Input.GetMouseButtonDown(0))
+            gameObject.layer = toggle ? 9 : 10;
+        }
+        if (Input.GetButtonDown("Fog")) {
+            toggleFog();
+        }
+        if (Input.GetButtonDown("Day")) {
+            setTime(!day);
+        }
+        if (Input.GetButtonDown("Flashlight")) {
+            toggleFlashLight();
+        }       
+        
+    if (Input.GetMouseButtonDown(0))
         {
             GameObject ball = Instantiate(ballPrefab, GameObject.Find("HandPosition").transform);
             ball.transform.localPosition = Vector3.zero;
@@ -41,9 +53,9 @@ public class Player : MonoBehaviour {
         }
 
         scoreHUD.text = "Score: " + score;
-    }
+}
 
-    private void OnCollisionEnter(Collision collision)
+private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Enemy")
         {
@@ -57,10 +69,20 @@ public class Player : MonoBehaviour {
             winCondition++;
             SceneManager.LoadScene(0);
         }
-        
-        if (collision.gameObject.tag == "Wall")
-        {
-            GetComponent<AudioSource>().Play();
-        }
+    }
+
+    public void setTime(bool day) {
+        this.day = day;
+        Shader.SetGlobalInt("_Day", day ? 1 : 0);
+    }
+
+    public void toggleFog() {
+        fog = !fog;
+        Shader.SetGlobalInt("_Fog", fog ? 1 : 0);
+    }
+
+    public void toggleFlashLight() {
+        flashLight = !flashLight;
+        Shader.SetGlobalInt("_Light", flashLight ? 1 : 0);
     }
 }
