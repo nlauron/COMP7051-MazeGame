@@ -10,12 +10,15 @@ public class Player : MonoBehaviour {
     public GameObject ballPrefab;
     public Camera pov;
     public Text scoreHUD;
+    public AudioClip wall;
     public static int winCondition = 0;
     public static int score;
 
     // Use this for initialization
     void Start() {
         score = 0;
+        GetComponent<AudioSource>().playOnAwake = false;
+        GetComponent<AudioSource>().clip = wall;
     }
 
     // Update is called once per frame
@@ -44,8 +47,8 @@ public class Player : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            Destroy(collision.gameObject);
             Enemy.loseCondition++;
+            Destroy(collision.gameObject);
             SceneManager.LoadScene(0);
         }
 
@@ -53,7 +56,11 @@ public class Player : MonoBehaviour {
         {
             winCondition++;
             SceneManager.LoadScene(0);
-            Debug.Log("Hit Hit Hit");
+        }
+        
+        if (collision.gameObject.tag == "Wall")
+        {
+            GetComponent<AudioSource>().Play();
         }
     }
 }
