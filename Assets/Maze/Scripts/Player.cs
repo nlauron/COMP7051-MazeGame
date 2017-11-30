@@ -69,6 +69,11 @@ private void OnCollisionEnter(Collision collision)
             winCondition++;
             SceneManager.LoadScene(0);
         }
+
+        if (collision.gameObject.tag == "Wall")
+        {
+            GetComponent<AudioSource>().Play();
+        }
     }
 
     public void setTime(bool day) {
