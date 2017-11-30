@@ -14,6 +14,7 @@ public class Player : MonoBehaviour {
     public GameObject ballPrefab;
     public Text scoreHUD;
     public static int score;
+    public AudioClip hit;
 
     private bool day = true;
     private bool fog = true;
@@ -66,10 +67,14 @@ public class Player : MonoBehaviour {
             winCondition++;
             SceneManager.LoadScene(0);
         }
+    }
 
-        if (collision.gameObject.tag == "Wall")
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Wall")
         {
-
+            GetComponent<AudioSource>().clip = hit;
+            GetComponent<AudioSource>().Play();
         }
     }
 
