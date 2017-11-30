@@ -9,14 +9,16 @@ public class Player : MonoBehaviour {
     public static int winCondition = 0;
     public GameObject pov;
     public Shader mainShader;
+    public GameObject sun;
 
     private bool day = true;
     private bool fog = true;
-    private bool flashLight = true;
+    private bool flashLight = false;
 
     // Use this for initialization
     void Start() {
         pov.GetComponent<Camera>().SetReplacementShader(mainShader, null);
+        sun = GameObject.Find("Sun");
     }
 
     // Update is called once per frame
@@ -55,6 +57,13 @@ public class Player : MonoBehaviour {
     public void setTime(bool day) {
         this.day = day;
         Shader.SetGlobalInt("_Day", day ? 1 : 0);
+        if(day) {
+            sun.GetComponent<Light>().intensity = 1;
+            sun.transform.localRotation = Quaternion.Euler(50f,-30f,0f);
+        } else {
+            sun.GetComponent<Light>().intensity = 0.2f;
+            sun.transform.localRotation = Quaternion.Euler(195f, -30f, 0f);
+        }
     }
 
     public void toggleFog() {
