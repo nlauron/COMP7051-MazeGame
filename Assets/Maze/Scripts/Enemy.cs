@@ -9,8 +9,7 @@ public class Enemy : MonoBehaviour {
     public AudioClip hit;
 
     // Use this for initialization
-    void Start ()
-    {
+    void Start () {
         GetComponent<AudioSource>().playOnAwake = false;
         GetComponent<AudioSource>().clip = hit;
     }
@@ -73,6 +72,5 @@ public class Enemy : MonoBehaviour {
         }
         return passages.ToArray();
     }
-
 
 }
