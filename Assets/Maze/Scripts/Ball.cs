@@ -2,20 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ball : MonoBehaviour {
-    
+public class Ball : MonoBehaviour
+{
+
     public AudioClip wall;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         GetComponent<AudioSource>().playOnAwake = false;
         GetComponent<AudioSource>().clip = wall;
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     public void OnCollisionEnter(Collision collision)
     {
