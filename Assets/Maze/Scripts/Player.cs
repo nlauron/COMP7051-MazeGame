@@ -8,12 +8,20 @@ public class Player : MonoBehaviour {
 
     private bool toggle = true;
     public static int winCondition = 0;
+    public static int loseCondition = 0;
     public GameObject pov;
     public Shader mainShader;
     public GameObject sun;
     public GameObject ballPrefab;
     public Text scoreHUD;
     public static int score;
+    
+    public bool musicPlaying = false;
+    public static AudioSource bgm;
+    public AudioClip daytime;
+    public AudioClip nightTime;
+    public AudioClip hit;
+    public static float volumeMax;
 
     private bool day = true;
     private bool fog = true;
@@ -23,6 +31,7 @@ public class Player : MonoBehaviour {
     void Start() {
         pov.GetComponent<Camera>().SetReplacementShader(mainShader, null);
         sun = GameObject.Find("Sun");
+        bgm = GameObject.Find("BGM").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -41,6 +50,11 @@ public class Player : MonoBehaviour {
             toggleFlashLight();
         }
 
+        if (Input.GetButtonDown("Music"))
+        {
+            toggleMusic();
+        }
+
         if (Input.GetButtonDown("Throw"))
         {
             GameObject ball = Instantiate(ballPrefab, GameObject.Find("HandPosition").transform);
@@ -50,6 +64,12 @@ public class Player : MonoBehaviour {
             Destroy(ball, 5.0f);
         }
         scoreHUD.text = "Score: " + score;
+
+        if (day)
+            playDay();
+        else
+            playNight();
+        
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -57,8 +77,8 @@ public class Player : MonoBehaviour {
         if (collision.gameObject.tag == "Enemy")
         {
             Destroy(collision.gameObject);
-            Enemy.loseCondition++;
-            SceneManager.LoadScene(0);
+            Player.loseCondition++;
+            SceneManager.LoadScene(2);
         }
 
         if (collision.gameObject.tag == "Goal")
@@ -66,10 +86,14 @@ public class Player : MonoBehaviour {
             winCondition++;
             SceneManager.LoadScene(0);
         }
+    }
 
-        if (collision.gameObject.tag == "Wall")
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Wall")
         {
-
+            GetComponent<AudioSource>().clip = hit;
+            GetComponent<AudioSource>().Play();
         }
     }
 
@@ -88,10 +112,42 @@ public class Player : MonoBehaviour {
     public void toggleFog() {
         fog = !fog;
         Shader.SetGlobalInt("_Fog", fog ? 1 : 0);
+        if (fog)
+            bgm.volume /= 2;
+        else
+            bgm.volume *= 2;
     }
 
     public void toggleFlashLight() {
         flashLight = !flashLight;
         Shader.SetGlobalInt("_Light", flashLight ? 1 : 0);
+    }
+
+    public void toggleMusic()
+    {
+        musicPlaying = !musicPlaying;
+    }
+
+    public void playDay()
+    {
+        if (musicPlaying)
+        {
+            bgm.clip = daytime;
+            bgm.Play();
+        }
+    }
+
+    public void playNight()
+    {
+        if (musicPlaying)
+        {
+            bgm.clip = nightTime;
+            bgm.Play();
+        }
+    }
+
+    public void stopMusic()
+    {
+        bgm.Stop();
     }
 }

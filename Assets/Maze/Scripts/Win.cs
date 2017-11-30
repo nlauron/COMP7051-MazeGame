@@ -25,7 +25,6 @@ public class Win : MonoBehaviour
         {
             Player.winCondition++;
             SceneManager.LoadScene(2);
-            Debug.Log("Hit Hit");
         }
     }
 }

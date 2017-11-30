@@ -8,7 +8,7 @@ public class MenuReturn : MonoBehaviour {
 
     public void returnMenu()
     {
-        Enemy.loseCondition = 0;
+        Player.loseCondition = 0;
         Player.winCondition = 0;
         Cursor.visible = false;
         SceneManager.LoadScene(0);
