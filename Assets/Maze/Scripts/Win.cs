@@ -16,7 +16,7 @@ public class Win : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        trophy.GetComponent<Transform>().Rotate(Vector3.up * Time.deltaTime * 250);
+        trophy.transform.Rotate(Vector3.up * Time.deltaTime * 250);
     }
 
     private void OnTriggerEnter(Collider collision)
