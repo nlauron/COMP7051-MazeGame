@@ -14,7 +14,13 @@ public class Player : MonoBehaviour {
     public GameObject ballPrefab;
     public Text scoreHUD;
     public static int score;
+    
+    public bool musicPlaying = false;
+    public static AudioSource bgm;
+    public AudioClip daytime;
+    public AudioClip nightTime;
     public AudioClip hit;
+    public static float volumeMax;
 
     private bool day = true;
     private bool fog = true;
@@ -24,6 +30,7 @@ public class Player : MonoBehaviour {
     void Start() {
         pov.GetComponent<Camera>().SetReplacementShader(mainShader, null);
         sun = GameObject.Find("Sun");
+        bgm = GameObject.Find("BGM").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -42,6 +49,11 @@ public class Player : MonoBehaviour {
             toggleFlashLight();
         }
 
+        if (Input.GetButtonDown("Music"))
+        {
+            toggleMusic();
+        }
+
         if (Input.GetButtonDown("Throw"))
         {
             GameObject ball = Instantiate(ballPrefab, GameObject.Find("HandPosition").transform);
@@ -51,6 +63,11 @@ public class Player : MonoBehaviour {
             Destroy(ball, 5.0f);
         }
         scoreHUD.text = "Score: " + score;
+
+        if (day)
+            playDay();
+        else
+            playNight();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -93,10 +110,42 @@ public class Player : MonoBehaviour {
     public void toggleFog() {
         fog = !fog;
         Shader.SetGlobalInt("_Fog", fog ? 1 : 0);
+        if (fog)
+            bgm.volume /= 2;
+        else
+            bgm.volume *= 2;
     }
 
     public void toggleFlashLight() {
         flashLight = !flashLight;
         Shader.SetGlobalInt("_Light", flashLight ? 1 : 0);
+    }
+
+    public void toggleMusic()
+    {
+        musicPlaying = !musicPlaying;
+    }
+
+    public void playDay()
+    {
+        if (musicPlaying)
+        {
+            bgm.clip = daytime;
+            bgm.Play();
+        }
+    }
+
+    public void playNight()
+    {
+        if (musicPlaying)
+        {
+            bgm.clip = nightTime;
+            bgm.Play();
+        }
+    }
+
+    public void stopMusic()
+    {
+        bgm.Stop();
     }
 }

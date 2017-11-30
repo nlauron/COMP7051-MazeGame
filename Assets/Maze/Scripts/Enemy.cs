@@ -21,7 +21,8 @@ public class Enemy : MonoBehaviour {
         anim.enabled = true;
         anim.Play("DudeWalk");
         transform.Translate(Vector3.forward * Time.deltaTime);
- 
+
+
     }
 
     private void OnCollisionEnter(Collision collision)
